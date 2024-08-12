@@ -24,7 +24,7 @@ var host = ":3000"
 func main() {
     r := chi.NewRouter()
     r.Use(cors.Handler(cors.Options{
-        // AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
+        // AllowedOrigins:   []string{"https://foo.com"}, 
         //AllowedOrigins:   []string{"https://*", "http://*"},
         //AllowedOrigins:   []string{"http://localhost:5173/"},
         AllowedOrigins:   []string{"http://192.168.5.112:5173"},
