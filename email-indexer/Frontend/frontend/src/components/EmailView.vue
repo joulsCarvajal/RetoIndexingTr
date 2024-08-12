@@ -146,22 +146,27 @@ async function getEmails(source='filter'){
         step: 40,
         order_by: "_score"
     }
-    let res = await axios.post("/get_emails", params, ); 
-    emails.value = []    
-    emails.value = res.data.Hits.map((hit)=>{
-        return {
-            id: hit._source._id,
-            directory: hit._source.Directory,
-            content: hit._source.Content,
-            from: hit._source.From,
-            to: hit._source.To,
-            subject: hit._source.Subject,
-            date: new Date(hit._source.Date)
-        }    
-    })
-    totalEmails.value = res.data.Total.Value
-    selectedEmail.value = emails.value[0]
-    loadingMails.value=false
+    
+    try { 
+        let res = await axios.post("http://192.168.5.112:3000/get_emails", params); 
+        emails.value = res.data.Hits.map((hit) => { 
+            return { 
+                id: hit._source._id, 
+                directory: hit._source.Directory, 
+                content: hit._source.Content, 
+                from: hit._source.From, 
+                to: hit._source.To, 
+                subject: hit._source.Subject, 
+                date: new Date(hit._source.Date) 
+                }; 
+            }); 
+            totalEmails.value = res.data.Total.Value; 
+            selectedEmail.value = emails.value[0]; 
+        } catch (error) { 
+            console.error('Error fetching emails:', error); 
+        } finally { 
+            loadingMails.value = false; 
+        }
 }
 
 onMounted(() => {
